@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:money_controller/screens/mainScreen.dart';
 import 'package:numberpicker/generated/i18n.dart';
 import 'package:redux/redux.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -8,6 +9,7 @@ import 'package:firebase_analytics/observer.dart';
 import 'logic/actions.dart';
 import 'logic/constants.dart';
 import 'logic/middleware.dart';
+import 'logic/reducer.dart';
 import 'logic/reduxState.dart';
 import 'logic/theme.dart';
 
@@ -19,7 +21,6 @@ class MyApp extends StatelessWidget {
   final Store<ReduxState> store = new Store<ReduxState>(reduce,
       initialState: new ReduxState(
           entries: [],
-          unit: 'kg',
           removedEntryState: new RemovedEntryState(hasEntryBeenRemoved: false),
           firebaseState: new FirebaseState(),
           mainPageState: new MainPageReduxState(hasEntryBeenAdded: false),
@@ -49,7 +50,7 @@ class MyApp extends StatelessWidget {
         localizationsDelegates: [S.delegate],
         supportedLocales: S.delegate.supportedLocales,
 
-        //home: new MainPage(title: titleStr, analytics: analytics),
+        home: new MainScreen(title: titleStr, analytics: analytics),
       ),
     );
   }

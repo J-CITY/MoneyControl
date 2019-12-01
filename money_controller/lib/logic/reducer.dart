@@ -2,9 +2,10 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:money_controller/logic/reduxState.dart';
 import 'package:money_controller/model/itemEntry.dart';
 
+import 'actions.dart';
+
 ReduxState reduce(ReduxState state, action) {
   List<ItemEntry> entries = _reduceEntries(state, action);
-  String unit = _reduceUnit(state, action);
   RemovedEntryState removedEntryState = _reduceRemovedEntryState(state, action);
   ItemEntryDialogReduxState weightEntryDialogState =
   _reduceWeightEntryDialogState(state, action);
@@ -12,36 +13,27 @@ ReduxState reduce(ReduxState state, action) {
   MainPageReduxState mainPageState = _reduceMainPageState(state, action);
   DateTime progressChartStartDate =
   _reduceProgressChartStartDate(state, action);
-  double weightFromNotes = _reduceWeightFromNotes(state, action);
+  double itemFromNotes = _reduceItemFromNotes(state, action);
 
   return new ReduxState(
     entries: entries,
-    unit: unit,
     removedEntryState: removedEntryState,
     itemEntryDialogState: weightEntryDialogState,
     firebaseState: firebaseState,
     mainPageState: mainPageState,
     progressChartStartDate: progressChartStartDate,
-    weightFromNotes: weightFromNotes,
+    itemFromNotes: itemFromNotes,
   );
 }
 
-double _reduceWeightFromNotes(ReduxState state, action) {
-  double weight = state.weightFromNotes;
+double _reduceItemFromNotes(ReduxState state, action) {
+  double item = state.itemFromNotes;
   if (action is AddItemFromNotes) {
-    weight = action.weight;
+    item = action.item;
   } else if (action is ConsumeItemFromNotes) {
-    weight = null;
+    item = null;
   }
-  return weight;
-}
-
-String _reduceUnit(ReduxState reduxState, action) {
-  String unit = reduxState.unit;
-  if (action is OnUnitChangedAction) {
-    unit = action.unit;
-  }
-  return unit;
+  return item;
 }
 
 MainPageReduxState _reduceMainPageState(ReduxState reduxState, action) {
@@ -83,17 +75,20 @@ ItemEntryDialogReduxState _reduceWeightEntryDialogState(
   ItemEntryDialogReduxState newState = reduxState.itemEntryDialogState;
   if (action is UpdateActiveItemEntry) {
     newState = newState.copyWith(
-        activeEntry: new ItemEntry.copy(action.weightEntry));
+        activeEntry: new ItemEntry.copy(action.itemEntry));
   } else if (action is OpenAddEntryDialog) {
     newState = newState.copyWith(
         activeEntry: new ItemEntry(
             new DateTime.now(),
-            reduxState.entries.isEmpty ? 70.0 : reduxState.entries.first.price,
+            reduxState.entries.isEmpty ? 0.0 : reduxState.entries.first.price,
+            reduxState.entries.isEmpty ? "rub" : reduxState.entries.first.unit,
+            reduxState.entries.isEmpty ? true : reduxState.entries.first.isIncoming,
+            reduxState.entries.isEmpty ? ItemType.salary : reduxState.entries.first.type,
             null),
         isEditMode: false);
   } else if (action is OpenEditEntryDialog) {
     newState =
-        newState.copyWith(activeEntry: action.weightEntry, isEditMode: true);
+        newState.copyWith(activeEntry: action.itemEntry, isEditMode: true);
   }
   return newState;
 }

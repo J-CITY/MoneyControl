@@ -6,30 +6,27 @@ import 'package:firebase_database/firebase_database.dart';
 @immutable
 class ReduxState {
   final List<ItemEntry> entries;
-  final String unit;
   final RemovedEntryState removedEntryState;
   final ItemEntryDialogReduxState itemEntryDialogState;
   final FirebaseState firebaseState;
   final MainPageReduxState mainPageState;
   final DateTime progressChartStartDate;
-  final double weightFromNotes;
+  final double itemFromNotes;
 
   const ReduxState({
     this.firebaseState = const FirebaseState(),
     this.entries = const [],
     this.mainPageState = const MainPageReduxState(),
-    this.unit = 'kg',
     this.removedEntryState = const RemovedEntryState(),
     this.itemEntryDialogState = const ItemEntryDialogReduxState(),
     this.progressChartStartDate,
-    this.weightFromNotes,
+    this.itemFromNotes,
   });
 
   ReduxState copyWith({
     FirebaseState firebaseState,
     List<ItemEntry> entries,
     bool hasEntryBeenAdded,
-    String unit,
     RemovedEntryState removedEntryState,
     ItemEntryDialogReduxState weightEntryDialogState,
     DateTime progressChartStartDate,
@@ -38,9 +35,7 @@ class ReduxState {
         firebaseState: firebaseState ?? this.firebaseState,
         entries: entries ?? this.entries,
         mainPageState: mainPageState ?? this.mainPageState,
-        unit: unit ?? this.unit,
-        itemEntryDialogState:
-        itemEntryDialogState ?? this.itemEntryDialogState,
+        itemEntryDialogState: itemEntryDialogState ?? this.itemEntryDialogState,
         removedEntryState: removedEntryState ?? this.removedEntryState,
         progressChartStartDate: progressChartStartDate ?? this.progressChartStartDate);
   }

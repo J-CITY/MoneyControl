@@ -28,17 +28,19 @@ class ItemEntry {
 
   DateTime dateTime;
   double price;
+  String unit;
   String note;
   bool isIncoming;
   ItemType type;
 
-  ItemEntry(this.dateTime, this.price,
+  ItemEntry(this.dateTime, this.price, this.unit,
       this.isIncoming, this.type, this.note);
 
   ItemEntry.fromSnapshot(DataSnapshot snapshot)
       : key = snapshot.key,
         dateTime = new DateTime.fromMillisecondsSinceEpoch(snapshot.value["date"]),
         price = snapshot.value["price"].toDouble(),
+        unit = snapshot.value["unit"],
         isIncoming = snapshot.value["isIncoming"].toBool(),
         type = getItemFromString(snapshot.value["type"]),
         note = snapshot.value["note"];
@@ -48,20 +50,22 @@ class ItemEntry {
         dateTime = new DateTime.fromMillisecondsSinceEpoch(
             itemEntry.dateTime.millisecondsSinceEpoch),
         price = itemEntry.price,
+        unit = itemEntry.unit,
         isIncoming = itemEntry.isIncoming,
         type = itemEntry.type,
         note = itemEntry.note;
 
-  ItemEntry._internal(this.key, this.dateTime, this.price,
+  ItemEntry._internal(this.key, this.dateTime, this.price, this.unit,
     this.isIncoming, this.type, this.note);
 
   ItemEntry copyWith(
-      {String key, DateTime dateTime, double price,
+      {String key, DateTime dateTime, double price, String unit,
         bool isIncoming, ItemType type, String note}) {
     return new ItemEntry._internal(
       key ?? this.key,
       dateTime ?? this.dateTime,
       price ?? this.price,
+      unit ?? this.unit,
       isIncoming ?? this.isIncoming,
       type ?? this.type,
       note ?? this.note,
@@ -71,6 +75,7 @@ class ItemEntry {
   toJson() {
     return {
       "price": price,
+      "unit": unit,
       "date": dateTime.millisecondsSinceEpoch,
       "isIncoming": isIncoming,
       "type": type.toString(),
@@ -88,6 +93,7 @@ class ItemEntry {
           dateTime.millisecondsSinceEpoch == other.dateTime
               .millisecondsSinceEpoch &&
           price == other.price &&
+          unit == other.unit &&
           isIncoming == other.isIncoming &&
           type == other.type &&
           note == other.note;
