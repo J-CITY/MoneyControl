@@ -2,6 +2,34 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:money_controller/model/itemEntry.dart';
 
+class InitAction {}
+
+class SetUnitAction {
+  final String unit;
+
+  SetUnitAction(this.unit);
+}
+
+class OnUnitChangedAction {
+  final String unit;
+
+  OnUnitChangedAction(this.unit);
+}
+
+class UpdateActiveItemEntry {
+  final ItemEntry itemEntry;
+
+  UpdateActiveItemEntry(this.itemEntry);
+}
+
+class OpenAddEntryDialog {}
+
+class OpenEditEntryDialog {
+  final ItemEntry itemEntry;
+
+  OpenEditEntryDialog(this.itemEntry);
+}
+
 class UserLoadedAction {
   final FirebaseUser firebaseUser;
   final List<ItemEntry> cachedEntries;
@@ -25,13 +53,13 @@ class AddItemFromNotes {
 class ConsumeItemFromNotes {}
 
 class AddEntryAction {
-  final ItemEntry initEntry;
-  AddEntryAction(this.initEntry);
+  final ItemEntry itemEntry;
+  AddEntryAction(this.itemEntry);
 }
 
 class EditEntryAction {
-  final ItemEntry initEntry;
-  EditEntryAction(this.initEntry);
+  final ItemEntry itemEntry;
+  EditEntryAction(this.itemEntry);
 }
 
 class RemoveEntryAction {
@@ -59,20 +87,6 @@ class AcceptEntryAddedAction {}
 class AcceptEntryRemovalAction {}
 
 class UndoRemovalAction {}
-
-class InitAction {}
-
-class UpdateActiveItemEntry {
-  final ItemEntry itemEntry;
-  UpdateActiveItemEntry(this.itemEntry);
-}
-
-class OpenAddEntryDialog {}
-
-class OpenEditEntryDialog {
-  final ItemEntry itemEntry;
-  OpenEditEntryDialog(this.itemEntry);
-}
 
 class ChangeProgressChartStartDate {
   final DateTime dateTime;

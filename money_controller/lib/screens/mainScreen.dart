@@ -4,6 +4,8 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:money_controller/logic/actions.dart';
 import 'package:money_controller/logic/reduxState.dart';
 
+import 'itemEntryDialog.dart';
+
 class MainScreenViewModel {
   final double defaultPrice;
   final bool hasEntryBeenAdded;
@@ -62,7 +64,7 @@ class MainScreenState extends State<MainScreen> with SingleTickerProviderStateMi
             store.dispatch(new OpenAddEntryDialog());
             Navigator.of(context).push(new MaterialPageRoute(
               builder: (BuildContext context) {
-                return null;//new ItemEntryDialog();
+                return new ItemEntryDialog();
               },
               fullscreenDialog: true,
             ));
@@ -110,7 +112,8 @@ class MainScreenState extends State<MainScreen> with SingleTickerProviderStateMi
             },
             body: new TabBarView(
               children: <Widget>[
-                //add smth
+                Text("1"),
+                Text("2")
               ],
               controller: _tabController,
             ),

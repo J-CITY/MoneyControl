@@ -7,18 +7,16 @@ import 'actions.dart';
 ReduxState reduce(ReduxState state, action) {
   List<ItemEntry> entries = _reduceEntries(state, action);
   RemovedEntryState removedEntryState = _reduceRemovedEntryState(state, action);
-  ItemEntryDialogReduxState weightEntryDialogState =
-  _reduceWeightEntryDialogState(state, action);
+  ItemEntryDialogReduxState itemEntryDialogState = _reduceItemEntryDialogState(state, action);
   FirebaseState firebaseState = _reduceFirebaseState(state, action);
   MainPageReduxState mainPageState = _reduceMainPageState(state, action);
-  DateTime progressChartStartDate =
-  _reduceProgressChartStartDate(state, action);
+  DateTime progressChartStartDate = _reduceProgressChartStartDate(state, action);
   double itemFromNotes = _reduceItemFromNotes(state, action);
 
   return new ReduxState(
     entries: entries,
     removedEntryState: removedEntryState,
-    itemEntryDialogState: weightEntryDialogState,
+    itemEntryDialogState: itemEntryDialogState,
     firebaseState: firebaseState,
     mainPageState: mainPageState,
     progressChartStartDate: progressChartStartDate,
@@ -49,7 +47,7 @@ MainPageReduxState _reduceMainPageState(ReduxState reduxState, action) {
 FirebaseState _reduceFirebaseState(ReduxState reduxState, action) {
   FirebaseState newState = reduxState.firebaseState;
   if (action is InitAction) {
-    FirebaseDatabase.instance.setPersistenceEnabled(true);
+    //FirebaseDatabase.instance.setPersistenceEnabled(true);
   } else if (action is UserLoadedAction) {
     newState = newState.copyWith(firebaseUser: action.firebaseUser);
   } else if (action is AddDatabaseReferenceAction) {
@@ -70,7 +68,7 @@ RemovedEntryState _reduceRemovedEntryState(ReduxState reduxState, action) {
   return newState;
 }
 
-ItemEntryDialogReduxState _reduceWeightEntryDialogState(
+ItemEntryDialogReduxState _reduceItemEntryDialogState(
     ReduxState reduxState, action) {
   ItemEntryDialogReduxState newState = reduxState.itemEntryDialogState;
   if (action is UpdateActiveItemEntry) {
@@ -125,3 +123,12 @@ DateTime _reduceProgressChartStartDate(ReduxState state, action) {
   }
   return date;
 }
+
+String _reduceUnit(ReduxState reduxState, action) {
+  String unit = "rub";//reduxState.unit;
+  if (action is OnUnitChangedAction) {
+    unit = action.unit;
+  }
+  return unit;
+}
+
